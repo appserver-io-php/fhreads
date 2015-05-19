@@ -52,9 +52,7 @@ void fhread_write_property(zval *object, zval *member, zval *value, const zend_l
 
 /* {{{ */
 void fhreads_global_free(FHREAD *fhread) {
-	// free own interpreter context
-	tsrm_free_interpreter_context(fhread->tsrm_ls);
-	efree(&fhread);
+	// efree(&fhread);
 } /* }}} */
 
 void *fhread_routine (void *arg)
