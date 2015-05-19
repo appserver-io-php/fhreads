@@ -8,6 +8,11 @@ if (!class_exists('\Thread')) {
 // define counter thread class which counts the shared data objects counter property
 class CounterThread extends Thread
 {
+    /**
+     * Constructor which refs the shared data object to this
+     * 
+     * @param object $data
+     */
     public function __construct($data)
     {
         $this->data = $data;
@@ -17,7 +22,6 @@ class CounterThread extends Thread
     {
         // wait randomized time
         usleep(rand(10000,20000));
-        
         // lock data object
         fhread_mutex_lock($this->data->mutex);
         // inc counter
