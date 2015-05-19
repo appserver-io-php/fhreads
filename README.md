@@ -10,7 +10,7 @@ The extension gives you access to plain system threading functions for being abl
 
 ## How to use?
 
-This extension is in early-stage development. Please use with caution.
+> This extension is in early-stage development. Please use with caution.
 
 This is a simple example how to use a shared data object as normal php object with a thread safe counter property.
 ```php
