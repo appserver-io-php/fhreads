@@ -68,7 +68,7 @@ var_dump($data);
 echo PHP_EOL . "finished script!" . PHP_EOL;
 ```
 
-This should give us an amazing result :)
+This should give us an amazing output! :)
 ```bash
 10 threads finished...
 object(stdClass)#1 (12) {
