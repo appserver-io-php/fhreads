@@ -84,6 +84,16 @@ abstract class Thread implements Runnable
     }
     
     /**
+     * Destroyes the thread and remove from from globals
+     * 
+     * @return void
+     */
+    public function destroy()
+    {
+        unset($GLOBALS[$this->getGlobalsIdentifier()]);
+    }
+    
+    /**
      * Returns the thread id
      * 
      * @return int
