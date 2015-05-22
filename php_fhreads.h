@@ -81,14 +81,11 @@ typedef struct _fhread {
 	TSRMLS_D;
 	zend_function *run;
 	zval **runnable;
+	zend_object_handle *handle;
 	int executor_inited;
 } FHREAD;
 
-void fhread_write_property(zval *object, zval *member, zval *value, const zend_literal *key TSRMLS_DC);
-void fhread_init_executor(TSRMLS_D);
-
-/* frees all resources allocated for the current thread */
-void fhread_ts_free_thread(THREAD_T thread_id);
+void fhread_init_executor(FHREAD *fhread TSRMLS_DC);
 
 /* {{{ TSRM manipulation */
 #define FHREADS_FETCH_ALL(ls, id, type) ((type) (*((void ***) ls))[TSRM_UNSHUFFLE_RSRC_ID(id)])
