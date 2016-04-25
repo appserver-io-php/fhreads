@@ -22,6 +22,7 @@
 # include "config.h"
 #endif
 
+
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
@@ -57,7 +58,8 @@ ZEND_END_ARG_INFO()
 /* {{{ PHP_INI */
 PHP_INI_BEGIN()
     STD_PHP_INI_ENTRY("fhreads.global_value", "42", PHP_INI_ALL, OnUpdateLong, global_value, zend_fhreads_globals, fhreads_globals)
-PHP_INI_END() /* }}} */
+PHP_INI_END()
+/* }}} */
 
 /* {{{ Wrappes orig zend_objects_store_get_handle function to make it thread-safe */
 ZEND_API uint32_t fhreads_zend_objects_store_get_handle() /* {{{ */

@@ -262,3 +262,4 @@ win32/win32.dsp
 win32/php.dsw
 .cproject
 .project
+.settings
