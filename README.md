@@ -11,5 +11,5 @@ The extension gives you access to plain system threading functions for being abl
 ## How to use?
 
 See php-userland library implementation for usage examples
-[(https://github.com/appserver-io/fhreads)](https://github.com/appserver-io/fhreads)
+[https://github.com/appserver-io/fhreads](https://github.com/appserver-io/fhreads)
 
