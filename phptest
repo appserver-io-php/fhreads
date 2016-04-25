@@ -1,0 +1,3 @@
+#!/bin/bash
+USE_ZEND_ALLOC=0
+/src/sapi/cli/php $@
