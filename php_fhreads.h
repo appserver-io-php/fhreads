@@ -24,7 +24,7 @@
 extern zend_module_entry fhreads_module_entry;
 #define phpext_fhreads_ptr &fhreads_module_entry
 
-#define PHP_FHREADS_VERSION "0.1.0"
+#define PHP_FHREADS_VERSION "1.0.0"
 
 #ifdef PHP_WIN32
 #	define PHP_FHREADS_API __declspec(dllexport)
@@ -35,6 +35,7 @@ extern zend_module_entry fhreads_module_entry;
 #endif
 
 #include <stdio.h>
+
 #ifndef _WIN32
 #include <pthread.h>
 #include <sys/time.h>
@@ -66,26 +67,40 @@ extern zend_module_entry fhreads_module_entry;
 #include <Zend/zend_closures.h>
 #include <Zend/zend_generators.h>
 #include <Zend/zend_vm.h>
+#include <TSRM/TSRM.h>
 
-#ifdef ZTS
-#include "TSRM.h"
-#endif
+#include "ext/standard/basic_functions.h"
 
-ZEND_BEGIN_MODULE_GLOBALS(fhreads)
-	HashTable fhreads;
-ZEND_END_MODULE_GLOBALS(fhreads)
-
-typedef struct _fhread {
+typedef struct _fhread_object {
 	pthread_t thread_id;
+	pthread_mutex_t syncMutex;
+	pthread_mutex_t execMutex;
+	pthread_cond_t notify;
 	void ***c_tsrm_ls;
-	TSRMLS_D;
-	zend_function *run;
-	zval **runnable;
-	zend_object_handle *handle;
-	int executor_inited;
-} FHREAD;
+	void ***tsrm_ls;
+	uint32_t handle;
+	uint32_t runnable_handle;
+	int is_initialized;
+	int is_joined;
+	int rv;
+	zval *runnable;
+} fhread_object;
 
-void fhread_init_executor(FHREAD *fhread TSRMLS_DC);
+typedef struct _fhread_objects_store {
+	fhread_object **object_buckets;
+	uint32_t top;
+	uint32_t size;
+	int free_list_head;
+	pthread_mutex_t mutex;
+} fhread_objects_store;
+
+#ifdef HAVE_SIGNAL_H
+#ifdef _WIN32
+#	define FHREAD_KILL_SIGNAL SIGBREAK
+#else
+#	define FHREAD_KILL_SIGNAL SIGUSR1
+#endif
+#endif
 
 /* {{{ TSRM manipulation */
 #define FHREADS_FETCH_ALL(ls, id, type) ((type) (*((void ***) ls))[TSRM_UNSHUFFLE_RSRC_ID(id)])
@@ -94,6 +109,7 @@ void fhread_init_executor(FHREAD *fhread TSRMLS_DC);
 #define FHREADS_CG_ALL(ls) FHREADS_FETCH_ALL(ls, compiler_globals_id, zend_compiler_globals*)
 #define FHREADS_EG(ls, v) FHREADS_FETCH_CTX(ls, executor_globals_id, zend_executor_globals*, v)
 #define FHREADS_SG(ls, v) FHREADS_FETCH_CTX(ls, sapi_globals_id, sapi_globals_struct*, v)
+#define FHREADS_PG(ls, v) FHREADS_FETCH_CTX(ls, core_globals_id, php_core_globals*, v)
 #define FHREADS_EG_ALL(ls) FHREADS_FETCH_ALL(ls, executor_globals_id, zend_executor_globals*)
 /* }}} */
 
