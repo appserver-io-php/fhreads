@@ -1,12 +1,40 @@
-language: php
-php:
-  - 5.6
+language: c
+sudo: false
+addons:
+  apt:
+    packages:
+      - locales
+      - language-pack-de
+      - re2c
+      - libgmp-dev
+      - libicu-dev
+      - libmcrypt-dev
+      - libtidy-dev
+      - libenchant-dev
+      - libaspell-dev
+      - libpspell-dev
+      - librecode-dev
+      - libsasl2-dev
+      - libxpm-dev
+      - libt1-dev
+
+cache: 
+    - apt
+    
+env:
+    global:
+      - REPORT_EXIT_STATUS=1
+
+before_script:
+	- git clone https://github.com/php/php-src.git --branch PHP-7.0 --single-branch ../php-src
+	- cp -r `pwd` ../php-src/ext/fhreads
 
 script:
-  - phpize
-  - ./configure
+  - cd ../php-src
+  - git apply ext/fhreads/patches/zend_objects_API.patch
+  - ./buildconf --force
+  - ./configure --disable-all --enable-fhreads --enable-maintainer-zts --enable-sockets
   - make
-  - REPORT_EXIT_STATUS=1 TEST_PHP_ARGS="-q --show-diff" make test
   
 notifications:
   email: jz@appserver.io

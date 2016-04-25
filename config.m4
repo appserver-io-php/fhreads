@@ -58,5 +58,5 @@ if test "$PHP_FHREADS" != "no"; then
   dnl
   dnl PHP_SUBST(FHREADS_SHARED_LIBADD)
 
-  PHP_NEW_EXTENSION(fhreads, fhreads.c, $ext_shared)
+  PHP_NEW_EXTENSION(fhreads, fhreads.c, $ext_shared,, -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1)
 fi
