@@ -19,11 +19,11 @@ addons:
       - libt1-dev
 
 cache: 
-    - apt
+  - apt
     
 env:
-    global:
-      - REPORT_EXIT_STATUS=1
+  global:
+    - REPORT_EXIT_STATUS=1
 
 before_script:
   - git clone https://github.com/php/php-src.git --branch PHP-7.0 --single-branch ../php-src
@@ -34,7 +34,8 @@ script:
   - git apply ext/fhreads/patches/zend_objects_API.patch
   - ./buildconf --force
   - ./configure --disable-all --enable-fhreads --enable-maintainer-zts --enable-sockets
-  - make
+  - make -j4
+  - TEST_PHP_EXECUTABLE=ext/fhreads/phptest sapi/cli/php run-tests.php ext/fhreads/tests/fhreads
   
 notifications:
   email: jz@appserver.io
