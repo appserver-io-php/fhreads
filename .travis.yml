@@ -26,8 +26,8 @@ env:
       - REPORT_EXIT_STATUS=1
 
 before_script:
-	- git clone https://github.com/php/php-src.git --branch PHP-7.0 --single-branch ../php-src
-	- cp -r `pwd` ../php-src/ext/fhreads
+  - git clone https://github.com/php/php-src.git --branch PHP-7.0 --single-branch ../php-src
+  - cp -r `pwd` ../php-src/ext/fhreads
 
 script:
   - cd ../php-src
