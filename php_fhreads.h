@@ -70,6 +70,7 @@ extern zend_module_entry fhreads_module_entry;
 #include <TSRM/TSRM.h>
 
 #include "ext/standard/basic_functions.h"
+#include "ext/spl/php_spl.h"
 
 typedef struct _fhread_object {
 	pthread_t thread_id;
@@ -110,7 +111,9 @@ typedef struct _fhread_objects_store {
 #define FHREADS_EG(ls, v) FHREADS_FETCH_CTX(ls, executor_globals_id, zend_executor_globals*, v)
 #define FHREADS_SG(ls, v) FHREADS_FETCH_CTX(ls, sapi_globals_id, sapi_globals_struct*, v)
 #define FHREADS_PG(ls, v) FHREADS_FETCH_CTX(ls, core_globals_id, php_core_globals*, v)
+#define FHREADS_SPL_G(ls, v) FHREADS_FETCH_CTX(ls, spl_globals_id, zend_spl_globals*, v)
 #define FHREADS_EG_ALL(ls) FHREADS_FETCH_ALL(ls, executor_globals_id, zend_executor_globals*)
+
 /* }}} */
 
 #ifdef ZTS

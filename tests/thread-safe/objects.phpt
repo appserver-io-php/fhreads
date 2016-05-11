@@ -1,5 +1,7 @@
 --TEST--
 Ensure that zend objects_store is thread-safe in concurrent operations
+--ENV--
+USE_ZEND_ALLOC=0
 --FILE--
 <?php 
 

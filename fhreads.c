@@ -321,7 +321,8 @@ void fhread_init_executor(fhread_object *fhread) /* {{{ */
 	EG(user_error_handler) = FHREADS_EG(fhread->c_tsrm_ls, user_error_handler);
 	EG(error_handling) = FHREADS_EG(fhread->c_tsrm_ls, error_handling);
 
-	EG(in_autoload) = FHREADS_EG(fhread->c_tsrm_ls, in_autoload);;
+	SPL_G(autoload_functions) = FHREADS_SPL_G(fhread->c_tsrm_ls, autoload_functions);
+	EG(in_autoload) = FHREADS_EG(fhread->c_tsrm_ls, in_autoload);
 	EG(autoload_func) = FHREADS_EG(fhread->c_tsrm_ls, autoload_func);
 
 	zend_init_fpu();

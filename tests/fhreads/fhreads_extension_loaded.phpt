@@ -3,7 +3,7 @@ Check for fhreads presence
 --SKIPIF--
 <?php if (!extension_loaded("fhreads")) print "skip"; ?>
 --FILE--
-<?php 
+<?php
 echo "fhreads extension is available";
 ?>
 --EXPECT--
